@@ -16,6 +16,7 @@ import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 
 import dataStructures.serializableGraph.*;
+import dataStructures.tuple.Couple;
 import javafx.application.Platform;
 
 /**
@@ -196,5 +197,17 @@ public class MapRepresentation implements Serializable {
 		viewer.setCloseFramePolicy(FxViewer.CloseFramePolicy.CLOSE_VIEWER);
 		viewer.addDefaultView(true);
 		g.display();
+	}
+	
+	public List<Couple<String, String>> getEdges() {
+		List<Couple<String, String>> edges = new ArrayList<>();
+		Iterator<Edge> iterE = this.g.edges().iterator();
+		while (iterE.hasNext()){
+			Edge e=iterE.next();
+			Node sn=e.getSourceNode();
+			Node tn=e.getTargetNode();
+			edges.add(new Couple<String, String>(sn.getId(), tn.getId()));
+		}
+		return edges;
 	}
 }
