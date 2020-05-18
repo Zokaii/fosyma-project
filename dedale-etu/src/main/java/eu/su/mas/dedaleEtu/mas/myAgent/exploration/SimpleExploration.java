@@ -36,7 +36,7 @@ public class SimpleExploration extends SimpleBehaviour {
 		if (myPosition!=null){
 			
 			try {
-				myAgent.doWait(2000);
+				myAgent.doWait(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -46,6 +46,7 @@ public class SimpleExploration extends SimpleBehaviour {
 			if (! ((Agent)myAgent).getStenchs(lobs).isEmpty()) {
 				finished = true;
 				((Agent)myAgent).addBehaviour(new FollowStench(((Agent)myAgent)));
+				return;
 			}
 			
 			if (((Agent)myAgent).blocked()) {
@@ -61,23 +62,23 @@ public class SimpleExploration extends SimpleBehaviour {
 			((Agent)myAgent).getOpenNodes().remove(myPosition);
 
 			((Agent)myAgent).getMap().addNode(myPosition, MapAttribute.closed);
-
+			
 			String nextNode=null;
 			Iterator<Couple<String, List<Couple<Observation, Integer>>>> iter=lobs.iterator();
 			while(iter.hasNext()){
 				String nodeId=iter.next().getLeft();
-				if (! ((Agent)myAgent).getClosedNodes().contains(nodeId)){
-					if (! ((Agent)myAgent).getOpenNodes().contains(nodeId)){
+				if (!((Agent)myAgent).getClosedNodes().contains(nodeId)){
+					if (!((Agent)myAgent).getOpenNodes().contains(nodeId)){
 						((Agent)myAgent).getOpenNodes().add(nodeId);
 						((Agent)myAgent).getMap().addNode(nodeId, MapAttribute.open);
 						((Agent)myAgent).getMap().addEdge(myPosition, nodeId);	
 					}else{
 						((Agent)myAgent).getMap().addEdge(myPosition, nodeId);
 					}
-					if (nextNode==null) 
-						nextNode=nodeId;
+					if (nextNode==null) nextNode=nodeId;
 				}
 			}
+
 			if (((Agent)myAgent).getOpenNodes().isEmpty()){
 				((Agent)myAgent).setMapCompleted();
 				finished = true;
@@ -89,11 +90,11 @@ public class SimpleExploration extends SimpleBehaviour {
 				}
 				((Agent)myAgent).addBehaviour(new SearchStench(((Agent)myAgent)));
 				System.out.println("Exploration successufully done, behaviour removed.");
-			}else{
+			} else {
 				if (nextNode==null){
 					nextNode=((Agent)myAgent).getMap().getShortestPath(myPosition, ((Agent)myAgent).getOpenNodes().get(0)).get(0);
 				}
-				((AbstractDedaleAgent)this.myAgent).moveTo(nextNode);
+				((Agent)myAgent).moveTo(nextNode);
 			}
 		}
 	}

@@ -52,8 +52,9 @@ public class Blocked extends SimpleBehaviour{
 	@Override
 	public void action() {
 		
+		Random r = new Random();
 		try {
-			myAgent.doWait(1000);
+			myAgent.doWait(r.nextInt(200));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

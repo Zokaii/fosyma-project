@@ -11,8 +11,11 @@ public class FollowStench extends SimpleBehaviour {
 
 	private static final long serialVersionUID = -5283596889691258112L;
 	
+	private boolean finished;
+	
 	public FollowStench(Agent myAgent) {
 		super(myAgent);
+		finished = false;
 	}
 
 	@Override
@@ -23,7 +26,7 @@ public class FollowStench extends SimpleBehaviour {
 		if (myPosition != null) {
 			
 			try {
-				myAgent.doWait(2000);
+				myAgent.doWait(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -36,13 +39,16 @@ public class FollowStench extends SimpleBehaviour {
 			if (! stenchPos.isEmpty()) {
 				nextNode = stenchPos.get(0);
 				((Agent)myAgent).moveTo(nextNode);
+			} else {
+				((Agent)myAgent).addBehaviour(new SearchStench(((Agent)myAgent)));
+				finished = true;
 			}
 		}
 	}
 
 	@Override
 	public boolean done() {
-		return false;
+		return finished;
 	}
 
 }

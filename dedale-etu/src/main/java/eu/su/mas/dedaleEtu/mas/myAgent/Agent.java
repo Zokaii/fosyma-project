@@ -36,6 +36,7 @@ public class Agent extends AbstractDedaleAgent{
 	private boolean mapCompleted;
 	private String previousPosition;
 	private boolean tryPrevious = false;
+	private String stenchLastPosition;
 
 	public void setCommunication(boolean bool) {
 		communication = bool;
@@ -99,6 +100,14 @@ public class Agent extends AbstractDedaleAgent{
 	
 	public boolean blocked() {
 		return previousPosition == getCurrentPosition();
+	}
+	
+	public String getStenchLastPosition() {
+		return stenchLastPosition;
+	}
+	
+	public void setStenchLastPosition(String pos) {
+		stenchLastPosition = pos;
 	}
 	
 	public boolean getTryPrevious() {
